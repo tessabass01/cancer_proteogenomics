@@ -91,7 +91,7 @@ head(predictions)
 # reformat dataframe
 final_df <- data.frame()
 
-for (id in unique(predictions)) {  
+for (id in unique(predictions$UniProt)) {  
   filtered_df <- predictions %>%
     filter(UniProt == id) %>%
     unnest(AIUPred) %>%
@@ -122,14 +122,14 @@ for (gene in gene_names) {
   
   # plot figure
   ggplot(gene_df, aes(x = Position, y = AIUPred)) +
-    geom_line(color = "blue", size = 0.25) +
+    geom_line(color = "darkblue", size = 0.5) +
     labs(
       title = glue("{gene} Disorder Prediction"),
       x = "Amino Acid Position", y = "AIUPred Disorder Prediction"
     ) +
-    theme_bw()
+    theme_minimal()
   
-  # this downloads the graph
+  # download the graph
   ggsave(glue("{gene}_Disorder_Prediction.png"))
   print("Successfully downloaded " + glue("{gene}_Disorder_Prediction.png"))
 }
@@ -149,14 +149,14 @@ gene_df <- final_df %>%
 
 # plot figure
 ggplot(gene_df, aes(x = Position, y = AIUPred)) +
-  geom_line(color = "blue", size = 0.25) +
+  geom_line(color = "darkblue", size = 0.5) +
   labs(
     title = glue("{gene_to_graph} Disorder Prediction"),
     x = "Amino Acid Position", y = "AIUPred Disorder Prediction"
   ) +
-  theme_bw()
+  theme_minimal()
 
-# this downloads the graph
+# download the graph
 ggsave(glue("{gene_to_graph}_Disorder_Prediction.png"))
 print("Successfully downloaded " + glue("{gene_to_graph}_Disorder_Prediction.png"))
 ```
@@ -181,23 +181,23 @@ gene_df <- final_df %>%
 
 # plot figure
 ggplot(gene_df, aes(x = Position, y = AIUPred)) +
-  geom_line(color = "blue", size = 0.25) +
+  geom_line(color = "darkblue", size = 0.5) +
   labs(
     title = glue("{gene_to_graph} Disorder Prediction"),
     x = "Amino Acid Position", y = "AIUPred Disorder Prediction"
   ) +
-  theme_bw() +
+  theme_minimal() +
 
   # zoom in on specific areas of the protein
-  coord_cartesian(xlim = coordinates_of_figure) + 
-  
+  coord_cartesian(xlim = coordinates_of_figure) +
+
   # plot PTM sites
-  geom_vline(xintercept = PTM_positions, linetype = "dashed", color = "red", size = 0.25) +
+  geom_vline(xintercept = PTM_positions, linetype = "dashed", color = "red", size = 0.5) +
   annotate("text", x = PTM_positions[1],
            y = 0.8,
            label = "PTM Site", color = "red", angle = 90, vjust = -1, hjust = 1, size = 3)
 
-# this downloads the graph
+# download the graph
 ggsave(glue("{gene_to_graph}_Disorder_Prediction_Zoom.png"))
 print("Successfully downloaded " + glue("{gene_to_graph}_Disorder_Prediction_Zoom.png"))
 ```
